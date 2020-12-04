@@ -211,7 +211,6 @@ public class Step02IfForTest extends PlainTestCase {
         // => hangar
     }
 
-    // TODO: yamazaki 2020/11/06 ↓からスタート
     /**
      * Make your original exercise as question style about if-for statement. <br>
      * (if文for文についてあなたのオリジナルの質問形式のエクササイズを作ってみましょう)

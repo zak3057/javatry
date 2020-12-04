@@ -46,15 +46,15 @@ public class Step03DataTypeTest extends PlainTestCase {
         BigDecimal amba = new BigDecimal("9.4");
 
         piari = piari.plusDays(1);
-        land = piari.getYear();
+        land = piari.getYear(); // 2001
         bonvo = bonvo.plusMonths(1);
-        land = bonvo.getMonthValue();
-        land--;
+        land = bonvo.getMonthValue(); // 10
+        land--; // 9
         if (dstore) {
             BigDecimal addedDecimal = amba.add(new BigDecimal(land));
             sea = String.valueOf(addedDecimal);
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 18.4
     }
 
     // ===================================================================================
@@ -70,21 +70,22 @@ public class Step03DataTypeTest extends PlainTestCase {
         double amba = 2.3d;
         char miraco = 'a';
         boolean dohotel = miraco == 'a';
-        if (dohotel && dstore >= piari) {
-            bonvo = sea;
-            land = (short) bonvo;
-            bonvo = piari;
-            sea = (byte) land;
+        if (dohotel && dstore >= piari) { // true
+            bonvo = sea; // 127
+            land = (short) bonvo; // 127
+            bonvo = piari; // 2147483647
+            sea = (byte) land; // 127
             if (amba == 2.3D) {
-                sea = (byte) amba;
+                sea = (byte) amba; // 2.3
             }
         }
-        if (dstore > piari) {
+        if (dstore > piari) { // 2147483647.1f > 2147483647 ← 両方Int型にキャストされてしまう
             sea = 0;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 2
     }
 
+    // TODO: (2020/12/04) zak ↓から
     // ===================================================================================
     //                                                                              Object
     //                                                                              ======
