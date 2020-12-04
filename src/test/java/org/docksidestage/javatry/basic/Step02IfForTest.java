@@ -52,7 +52,7 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 7;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -67,7 +67,7 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 9;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -79,9 +79,9 @@ public class Step02IfForTest extends PlainTestCase {
         } else if (land && sea >= 904) {
             sea = 7;
         } else if (sea >= 903 || land) {
-            sea = 8;
+            sea = 8;//8
             if (!land) {
-                land = true;
+                land = true;//真
             } else if (sea <= 903) {
                 sea++;
             }
@@ -91,7 +91,7 @@ public class Step02IfForTest extends PlainTestCase {
         if (land) {
             sea = 10;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10
     }
 
     // ===================================================================================
@@ -107,7 +107,7 @@ public class Step02IfForTest extends PlainTestCase {
                 sea = stage;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -117,7 +117,7 @@ public class Step02IfForTest extends PlainTestCase {
         for (String stage : stageList) {
             sea = stage;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => magiclamp
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -125,7 +125,7 @@ public class Step02IfForTest extends PlainTestCase {
         List<String> stageList = prepareStageList();
         String sea = null;
         for (String stage : stageList) {
-            if (stage.startsWith("br")) {
+            if (stage.startsWith("br")) { //broadway
                 continue;
             }
             sea = stage;
@@ -133,7 +133,7 @@ public class Step02IfForTest extends PlainTestCase {
                 break;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hangar
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -149,7 +149,7 @@ public class Step02IfForTest extends PlainTestCase {
             }
         });
         String sea = sb.toString();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
 
     // ===================================================================================
@@ -161,6 +161,18 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_making() {
         // write if-for here
+        List<String> stageList = prepareStageList();
+        List<String> ans = new ArrayList<>();
+
+        for (int i = 0; i < stageList.size(); i++) {
+            if (stageList.get(i).contains("a")) {
+                ans.add(stageList.get(i));
+            }
+        }
+
+        for (int i = 0; i < ans.size(); i++) {
+            log(ans.get(i));
+        }
     }
 
     // ===================================================================================
@@ -172,19 +184,34 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
-        String sea = null;
-        for (String stage : stageList) {
-            if (stage.startsWith("br")) {
-                continue;
+        StringBuilder sb = new StringBuilder();
+
+        stageList.forEach(stage -> {
+            if (!stage.startsWith("br") && !sb.toString().contains("ga")) {
+                sb.setLength(0);
+                sb.append(stage);
             }
-            sea = stage;
-            if (stage.contains("ga")) {
-                break;
-            }
-        }
+        });
+        String sea = sb.toString();
         log(sea); // should be same as before-fix
+        // => hangar
+
+        //        List<String> stageList = prepareStageList();
+        //        String sea = null;
+        //        for (String stage : stageList) {
+        //            if (stage.startsWith("br")) {
+        //                continue;
+        //            }
+        //            sea = stage;
+        //            if (stage.contains("ga")) {
+        //                break;
+        //            }
+        //        }
+        //        log(sea); // should be same as before-fix
+        // => hangar
     }
 
+    // TODO: yamazaki 2020/11/06 ↓からスタート
     /**
      * Make your original exercise as question style about if-for statement. <br>
      * (if文for文についてあなたのオリジナルの質問形式のエクササイズを作ってみましょう)
