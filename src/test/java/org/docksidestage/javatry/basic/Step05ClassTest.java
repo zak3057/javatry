@@ -51,7 +51,7 @@ public class Step05ClassTest extends PlainTestCase {
         // quantity=9, salesProceeds=10000
         booth.buyOneDayPassport(10000);
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 1000
+        log(sea); // your answer? => 1000 -> 7400
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -76,7 +76,7 @@ public class Step05ClassTest extends PlainTestCase {
         } catch (TicketShortMoneyException continued) {
             log("Failed to buy one-day passport: money=" + handedMoney, continued);
         }
-        return booth.getQuantity(); // 10
+        return booth.getQuantity(); // 10 -> null
     }
 
     // ===================================================================================
@@ -89,6 +89,7 @@ public class Step05ClassTest extends PlainTestCase {
     public void test_class_letsFix_ticketQuantityReduction() {
         Integer sea = doTest_class_ticket_wrongQuantity();
         log(sea); // should be max quantity, visual check here
+        // 9 -> 10
     }
 
     /**
@@ -100,6 +101,7 @@ public class Step05ClassTest extends PlainTestCase {
         booth.buyOneDayPassport(10000);
         Integer sea = booth.getSalesProceeds();
         log(sea); // should be same as one-day price, visual check here
+        // 10000 -> 7400
     }
 
     /**
@@ -108,11 +110,11 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_letsFix_makeMethod_twoday() {
         // uncomment after making the method
-        //TicketBooth booth = new TicketBooth();
-        //int money = 14000;
-        //int change = booth.buyTwoDayPassport(money);
-        //Integer sea = booth.getSalesProceeds() + change;
-        //log(sea); // should be same as money
+        TicketBooth booth = new TicketBooth();
+        int money = 14000;
+        int change = booth.buyTwoDayPassport(money); // 800
+        Integer sea = booth.getSalesProceeds() + change; // 14000
+        log(sea); // should be same as money
 
         // and show two-day passport quantity here
     }
@@ -125,6 +127,7 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(10000);
         log(booth.getQuantity(), booth.getSalesProceeds()); // should be same as before-fix
+        // 9, 7400
     }
 
     // ===================================================================================

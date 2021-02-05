@@ -25,6 +25,7 @@ public class TicketBooth {
     //                                                                          ==========
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    private static final int TWO_DAY_PRICE = 13200;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -41,19 +42,51 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                          Buy Ticket
     //                                                                          ==========
-    public void buyOneDayPassport(int handedMoney) {
-        if (quantity <= 0) {
+    private void tryBuy(int handedMoney) {
+        // チケットが売り切れていたらエラーを投げる
+        if (quantity <= 0) { // 10
             throw new TicketSoldOutException("Sold out");
         }
-        if (handedMoney < ONE_DAY_PRICE) {
+        // お金が不足していたらエラーを投げる
+        if (handedMoney < ONE_DAY_PRICE) { // 引数 < 7400
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
-        --quantity;
+    }
+
+    private void setSalesProceeds(int money) {
+        // 存在チェック
         if (salesProceeds != null) {
-            salesProceeds = salesProceeds + handedMoney;
+            // 売り上げ加算
+            salesProceeds += money;
         } else {
-            salesProceeds = handedMoney;
+            // 売り上げが存在しないため代入
+            salesProceeds = money;
         }
+    }
+
+    public void buyOneDayPassport(int handedMoney) {
+        // 購入可能か
+        tryBuy(handedMoney);
+
+        // チケットの枚数減算
+        --quantity;
+
+        // 売り上げ加算
+        setSalesProceeds(ONE_DAY_PRICE);
+    }
+
+    public Integer buyTwoDayPassport(int handedMoney) {
+        // 購入可能か
+        tryBuy(handedMoney);
+
+        // チケットの枚数減算
+        quantity -= 2;
+
+        // 売り上げ加算
+        setSalesProceeds(TWO_DAY_PRICE);
+
+        // おつりを返す
+        return handedMoney - getSalesProceeds();
     }
 
     public static class TicketSoldOutException extends RuntimeException {
