@@ -17,6 +17,7 @@ package org.docksidestage.bizfw.basic.buyticket;
 
 /**
  * @author jflute
+ * @author zak
  */
 public class TicketBooth {
 
@@ -30,7 +31,7 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    private int quantity = MAX_QUANTITY;
+    private int quantity = MAX_QUANTITY; // one,twoでチケット共有
     private Integer salesProceeds;
 
     // ===================================================================================
@@ -42,51 +43,21 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                          Buy Ticket
     //                                                                          ==========
-    private void tryBuy(int handedMoney) {
-        // チケットが売り切れていたらエラーを投げる
-        if (quantity <= 0) { // 10
-            throw new TicketSoldOutException("Sold out");
-        }
-        // お金が不足していたらエラーを投げる
-        if (handedMoney < ONE_DAY_PRICE) { // 引数 < 7400
-            throw new TicketShortMoneyException("Short money: " + handedMoney);
-        }
+    public Ticket buyOneDayPassport(int handedMoney) {
+        tryBuy(handedMoney, ONE_DAY_PRICE); // 購入可能か
+        --quantity; // チケットの枚数減算
+        calculateSalesProceeds(ONE_DAY_PRICE); // 売り上げ加算
+
+        return new Ticket(ONE_DAY_PRICE);
     }
 
-    private void setSalesProceeds(int money) {
-        // 存在チェック
-        if (salesProceeds != null) {
-            // 売り上げ加算
-            salesProceeds += money;
-        } else {
-            // 売り上げが存在しないため代入
-            salesProceeds = money;
-        }
-    }
+    public TicketBuyResult buyTwoDayPassport(int handedMoney) {
+        tryBuy(handedMoney, TWO_DAY_PRICE); // 購入可能か
+        quantity -= 2; // チケットの枚数減算
+        calculateSalesProceeds(TWO_DAY_PRICE); // 売り上げ加算
 
-    public void buyOneDayPassport(int handedMoney) {
-        // 購入可能か
-        tryBuy(handedMoney);
-
-        // チケットの枚数減算
-        --quantity;
-
-        // 売り上げ加算
-        setSalesProceeds(ONE_DAY_PRICE);
-    }
-
-    public Integer buyTwoDayPassport(int handedMoney) {
-        // 購入可能か
-        tryBuy(handedMoney);
-
-        // チケットの枚数減算
-        quantity -= 2;
-
-        // 売り上げ加算
-        setSalesProceeds(TWO_DAY_PRICE);
-
-        // おつりを返す
-        return handedMoney - getSalesProceeds();
+        // return handedMoney - getSalesProceeds(); // おつりを返す
+        return new TicketBuyResult(handedMoney, TWO_DAY_PRICE);
     }
 
     public static class TicketSoldOutException extends RuntimeException {
@@ -104,6 +75,25 @@ public class TicketBooth {
 
         public TicketShortMoneyException(String msg) {
             super(msg);
+        }
+    }
+
+    private void tryBuy(int handedMoney, int price) {
+        // チケットが売り切れていたらエラーを投げる
+        if (quantity <= 0) {
+            throw new TicketSoldOutException("Sold out");
+        }
+        // お金が不足していたらエラーを投げる
+        if (handedMoney < price) {
+            throw new TicketShortMoneyException("Short money: " + handedMoney);
+        }
+    }
+
+    private void calculateSalesProceeds(int money) {
+        if (salesProceeds != null) {
+            salesProceeds += money; // 売り上げ加算
+        } else {
+            salesProceeds = money; // 売り上げが存在しないため代入
         }
     }
 
