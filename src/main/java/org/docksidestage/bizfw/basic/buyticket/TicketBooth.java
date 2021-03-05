@@ -32,7 +32,7 @@ public class TicketBooth {
     //                                                                           Attribute
     //                                                                           =========
     private int quantity = MAX_QUANTITY; // one,twoでチケット共有
-    private Integer salesProceeds;
+    private Integer salesProceeds; // 売り上げ
 
     // ===================================================================================
     //                                                                         Constructor
@@ -52,12 +52,13 @@ public class TicketBooth {
     }
 
     public TicketBuyResult buyTwoDayPassport(int handedMoney) {
+    // public int buyTwoDayPassport(int handedMoney) {
         tryBuy(handedMoney, TWO_DAY_PRICE); // 購入可能か
         quantity -= 2; // チケットの枚数減算
         calculateSalesProceeds(TWO_DAY_PRICE); // 売り上げ加算
 
-        // return handedMoney - getSalesProceeds(); // おつりを返す
-        return new TicketBuyResult(handedMoney, TWO_DAY_PRICE);
+        // return handedMoney - TWO_DAY_PRICE; // おつりを返す
+        return new TicketBuyResult(handedMoney - TWO_DAY_PRICE, TWO_DAY_PRICE); // おつりを返す
     }
 
     public static class TicketSoldOutException extends RuntimeException {
@@ -77,6 +78,10 @@ public class TicketBooth {
             super(msg);
         }
     }
+
+    // ------------------------------------------------
+    // private
+    // ------------------------------------------------
 
     private void tryBuy(int handedMoney, int price) {
         // チケットが売り切れていたらエラーを投げる
