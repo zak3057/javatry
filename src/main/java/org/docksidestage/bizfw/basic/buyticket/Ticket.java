@@ -21,6 +21,12 @@ package org.docksidestage.bizfw.basic.buyticket;
 public class Ticket {
 
     // ===================================================================================
+    //                                                                          Definition
+    //                                                                          ==========
+    private static final int ONE_DAY_PRICE = 7400;
+    private static final int TWO_DAY_PRICE = 13200;
+
+    // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
     private final int displayPrice;
@@ -52,5 +58,9 @@ public class Ticket {
 
     public boolean isAlreadyIn() {
         return alreadyIn;
+    }
+
+    public String ticketTypeCheck() {
+        
     }
 }
